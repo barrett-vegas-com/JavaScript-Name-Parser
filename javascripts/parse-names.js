@@ -3,6 +3,8 @@
 // ported to JavaScript by Mark Pemburn (pemburnia.com)
 // released under Apache 2.0 license
 
+// This file was originally pulled from: https://github.com/barrett-vegas-com/JavaScript-Name-Parser/blob/5f616fb38c7091a239fcbb8da319f3d5a596364c/parse-names.js
+
 var NameParse = (function(){
 	function NameParse() {
 		return NameParse;
@@ -45,7 +47,7 @@ var NameParse = (function(){
 			// if so, do a look-ahead to see if they go by their middle name
 			// for ex: "R. Jason Smith" => "Jason Smith" & "R." is stored as an initial
 			// but "R. J. Smith" => "R. Smith" and "J." is stored as an initial
-			if (numWords > 1 && this.is_initial(nameParts[start + 1])) {
+			if (numWords > 1 && !salutation && this.is_initial(nameParts[start + 1])) {
 				firstName += " " + word.toUpperCase();
 			} else {
 				initials += " " + word.toUpperCase();
