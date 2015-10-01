@@ -18,6 +18,11 @@ JavaScript library to split names into their respective components (first, last,
 
 We start by splitting the full name into separate words. We then do a dictionary lookup on the first and last words to see if they are a common prefix or suffix. Next, we take the middle portion of the string (everything minus the prefix & suffix) and look at everything except the last word of that string. We then loop through each of those words concatenating them together to make up the first name. While we’re doing that, we watch for any indication of a compound last name. It turns out that almost every compound last name starts with 1 of 15 prefixes (Von, Van, Vere, etc). If we see one of those prefixes, we break out of the first name loop and move on to concatenating the last name. We handle the capitalization issue by checking for camel-case before uppercasing the first letter of each word and lowercasing everything else. I wrote special cases for periods and dashes. We also have a couple other special cases, like ignoring words in parentheses all-together.
 
+**Testing**
+
+See the test page on http://barrett-vegas-com.github.io/JavaScript-Name-Parser/parse-names-test.html
+Also note that the scripts and page are currently maintained separately from this repo, so if changes are made in this repo they are manually copied to the ghpages branch.
+
 **Credits & license:**
 
 * Based on [PHP Name Parser](http://www.onlineaspect.com/2009/08/17/splitting-names/) by [Josh Fraser](http://joshfraser.com)
