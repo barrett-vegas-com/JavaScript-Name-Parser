@@ -7,12 +7,12 @@ var NameParse = (function(){
 	function NameParse() {
 		return NameParse;
 	}
-	
+
 		// split full names into the following parts:
 		// - prefix / salutation  (Mr., Mrs., etc)
 		// - given name / first name
 		// - middle initials
-		// - surname / last name 
+		// - surname / last name
 		// - suffix (II, Phd, Jr, etc)
 	NameParse.parse = function (fullastName) {
 		fullastName = fullastName.trim();
@@ -36,21 +36,21 @@ var NameParse = (function(){
 		var salutation = this.is_salutation(nameParts[0]);
 		var suffix = this.is_suffix(nameParts[numWords - 1]);
 		// set the range for the middle part of the name (trim prefixes & suffixes)
-		var start = (salutation) ? 1 : 0;
-		var end = (suffix) ? numWords - 1 : numWords;
+		var start = (salutation && numWords > 1) ? 1 : 0;
+		var end = (suffix && numWords > 1) ? numWords - 1 : numWords;
 
 		word = nameParts[start];
 		// if we start off with an initial, we'll call it the first name
 		if (this.is_initial(word)) {
-			// if so, do a look-ahead to see if they go by their middle name 
+			// if so, do a look-ahead to see if they go by their middle name
 			// for ex: "R. Jason Smith" => "Jason Smith" & "R." is stored as an initial
 			// but "R. J. Smith" => "R. Smith" and "J." is stored as an initial
-			if (this.is_initial(nameParts[start + 1])) {
+			if (numWords > 1 && this.is_initial(nameParts[start + 1])) {
 				firstName += " " + word.toUpperCase();
 			} else {
 				initials += " " + word.toUpperCase();
 			}
-		} else {
+		} else if ((salutation && numWords > 1) || (!salutation && numWords == 1)){
 			firstName += " " + this.fix_case(word);
 		}
 
@@ -64,12 +64,12 @@ var NameParse = (function(){
 			}
 
 			if (this.is_initial(word)) {
-				initials += " " + word.toUpperCase(); 
+				initials += " " + word.toUpperCase();
 			} else {
 				firstName += " " + this.fix_case(word);
 			}
 		}
-		
+
 		// check that we have more than 1 word in our string
 		if ((end - start) > 1) {
 			// concat the last name
@@ -77,7 +77,7 @@ var NameParse = (function(){
 				lastName += " " + this.fix_case(nameParts[j]);
 			}
 		}
-	
+
 		// return the various parts in an array
 		return {
 			"salutation": salutation || "",
@@ -93,8 +93,8 @@ var NameParse = (function(){
 		return word.replace(".","");
 	};
 
-	// detect and format standard salutations 
-	// I'm only considering english honorifics for now & not words like 
+	// detect and format standard salutations
+	// I'm only considering english honorifics for now & not words like
 	NameParse.is_salutation = function (word) {
 		word = this.removeIgnoredChars(word).toLowerCase();
 		// returns normalized values
@@ -115,7 +115,7 @@ var NameParse = (function(){
 		}
 	};
 
-	//  detect and format common suffixes 
+	//  detect and format common suffixes
 	NameParse.is_suffix = function (word) {
 		word = this.removeIgnoredChars(word).toLowerCase();
 		// these are some common suffixes - what am I missing?
