@@ -50,7 +50,7 @@ var NameParse = (function(){
 			} else {
 				initials += " " + word.toUpperCase();
 			}
-		} else if ((salutation && numWords > 1) || (!salutation && numWords == 1)){
+		} else {
 			firstName += " " + this.fix_case(word);
 		}
 
